@@ -15,7 +15,7 @@ vi.mock('@/lib/db', () => ({
 vi.mock('next/cache', () => ({ revalidatePath: vi.fn() }))
 
 import { prisma } from '@/lib/db'
-import { getTodos, createTodo, toggleTodo, deleteTodo } from '@/actions/todos'
+import { getTodos, createTodo, toggleTodo, deleteTodo, type FilterType } from '@/actions/todos'
 
 const makeTodo = (overrides = {}) => ({
   id: '1',
@@ -37,6 +37,30 @@ describe('getTodos', () => {
     const result = await getTodos()
     expect(result).toEqual(mockTodos)
     expect(prisma.todo.findMany).toHaveBeenCalledWith({ orderBy: { createdAt: 'desc' } })
+  })
+
+  it('passes no where clause when filter is "all"', async () => {
+    vi.mocked(prisma.todo.findMany).mockResolvedValue([])
+    await getTodos('all')
+    expect(prisma.todo.findMany).toHaveBeenCalledWith({ orderBy: { createdAt: 'desc' } })
+  })
+
+  it('filters by completed:false when filter is "active"', async () => {
+    vi.mocked(prisma.todo.findMany).mockResolvedValue([])
+    await getTodos('active')
+    expect(prisma.todo.findMany).toHaveBeenCalledWith({
+      where: { completed: false },
+      orderBy: { createdAt: 'desc' },
+    })
+  })
+
+  it('filters by completed:true when filter is "completed"', async () => {
+    vi.mocked(prisma.todo.findMany).mockResolvedValue([])
+    await getTodos('completed')
+    expect(prisma.todo.findMany).toHaveBeenCalledWith({
+      where: { completed: true },
+      orderBy: { createdAt: 'desc' },
+    })
   })
 })
 
