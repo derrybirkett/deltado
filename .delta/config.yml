@@ -1,0 +1,21 @@
+product:
+  name: Todo App
+  vision: "A fast, keyboard-first todo app for developers who think in lists"
+  target_user: "solo developer or power user who wants to get things out of their head fast"
+  principles:
+    - speed over features — interactions should feel instant
+    - keyboard-first — every action should be possible without a mouse
+    - mobile responsive — works well on phone too
+    - minimal UI — no clutter, no chrome, just the content
+  avoid:
+    - user accounts / authentication
+    - social or sharing features
+    - push notifications
+    - drag-and-drop (until keyboard nav is complete)
+
+stack:
+  framework: nextjs
+  styling: tailwind + shadcn
+  database: prisma + sqlite (local) / neon postgres (prod)
+  testing: vitest + playwright
+  allowed_deps: []
