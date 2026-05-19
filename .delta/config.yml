@@ -1,5 +1,5 @@
 product:
-  name: Todo App
+  name: deltado
   vision: "A fast, keyboard-first todo app for developers who think in lists"
   target_user: "solo developer or power user who wants to get things out of their head fast"
   principles:
@@ -18,4 +18,10 @@ stack:
   styling: tailwind + shadcn
   database: prisma + sqlite (local) / neon postgres (prod)
   testing: vitest + playwright
-  allowed_deps: []
+  allowed_deps:
+    - "@base-ui/react"
+    - class-variance-authority
+    - clsx
+    - lucide-react
+    - tailwind-merge
+    - tw-animate-css
