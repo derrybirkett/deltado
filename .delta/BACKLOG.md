@@ -2,11 +2,13 @@
 
 <!-- Product agent maintains this file. Edit directly to override priorities. -->
 
-## Ready
-- [ ] Add due dates to todos (date picker, show relative time)
-- [ ] Priority labels (high/medium/low with colour badges)
+## In Progress
 - [ ] Filter todos by status (all / active / completed)
+
+## Ready
 - [ ] Keyboard shortcut: j/k to navigate, space to toggle, d to delete
+- [ ] Priority labels (high/medium/low with colour badges)
+- [ ] Add due dates to todos (date picker, show relative time)
 
 ## Ideas
 - [ ] Bulk complete all
