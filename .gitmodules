@@ -1,3 +1,6 @@
 [submodule "delta"]
 	path = delta
 	url = https://github.com/derrybirkett/delta.git
+[submodule "council"]
+	path = council
+	url = https://github.com/derrybirkett/council
