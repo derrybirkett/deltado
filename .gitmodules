@@ -4,3 +4,6 @@
 [submodule "council"]
 	path = council
 	url = https://github.com/derrybirkett/council
+[submodule "merge"]
+	path = merge
+	url = https://github.com/derrybirkett/merge
