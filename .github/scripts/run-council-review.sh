@@ -46,7 +46,7 @@ $REVIEW
 *Reviewed by [Council](https://github.com/derrybirkett/council) CTO advisor*"
 
 # Apply label based on verdict
-if echo "$REVIEW" | grep -qi "verdict.*approved\|approved"; then
+if echo "$REVIEW" | grep -qi "\*\*Verdict\*\*:[[:space:]]*Approved"; then
   gh pr edit "$PR_NUMBER" --add-label "council/approved"
   gh pr edit "$PR_NUMBER" --add-label "merge/ready" 2>/dev/null || true
 else
