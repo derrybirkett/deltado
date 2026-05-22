@@ -2,7 +2,7 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** Build the `merge` submodule repo and integrate it into deltado as the third piece of the MakerSuite autonomous pipeline.
+**Goal:** Build the `merge` submodule repo and integrate it into deltado as the third piece of the DeltaSuite autonomous pipeline.
 
 **Architecture:** A new GitHub repo (`derrybirkett/merge`) holds a cron script and an AI prompt. A GitHub Actions workflow in deltado polls every 30 min for PRs labelled `merge/ready`, waits for a 24h review window, then runs an AI safety judgment before merging or blocking. Fully stateless — all state lives in GitHub labels.
 
@@ -447,7 +447,7 @@ Create `/tmp/merge/README.md`:
 ```markdown
 # Merge
 
-Autonomous merge agent for GitHub repos. Part of [MakerSuite](https://github.com/derrybirkett/deltado).
+Autonomous merge agent for GitHub repos. Part of [DeltaSuite](https://github.com/derrybirkett/deltado).
 
 Polls every 30 minutes for PRs labelled `merge/ready`. After a 24-hour review window, runs an AI safety check, then merges or blocks.
 
@@ -486,7 +486,7 @@ bash merge/scripts/setup.sh
 Set `MERGE_STRATEGY` as a GitHub Actions repository variable to control merge method.
 Options: `squash` (default), `rebase`, `merge`.
 
-## MakerSuite
+## DeltaSuite
 
 Merge is designed to work standalone, but pairs with:
 - [Delta](https://github.com/derrybirkett/delta) — builds features autonomously

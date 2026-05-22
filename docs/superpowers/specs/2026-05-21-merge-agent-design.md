@@ -2,13 +2,13 @@
 
 **Date:** 2026-05-21  
 **Status:** Approved  
-**Suite:** MakerSuite (Delta + Council + Merge)
+**Suite:** DeltaSuite (Delta + Council + Merge)
 
 ---
 
 ## Overview
 
-Merge is a standalone GitHub submodule that automatically merges PRs after a 24-hour human review window, using AI to make a final safety judgment before the merge executes. It is independent of Council and Delta but integrates with them cleanly when the full MakerSuite is installed.
+Merge is a standalone GitHub submodule that automatically merges PRs after a 24-hour human review window, using AI to make a final safety judgment before the merge executes. It is independent of Council and Delta but integrates with them cleanly when the full DeltaSuite is installed.
 
 The key differentiator from rule-based tools like Mergify: Merge uses AI judgment, not just label/CI checks, as the final gate.
 

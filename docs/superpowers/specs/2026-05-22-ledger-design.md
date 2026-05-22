@@ -5,7 +5,7 @@
 
 ## Goal
 
-Ledger is a fourth MakerSuite submodule that monitors the autonomous pipeline for gaps between expected and actual behaviour. It runs once each morning, is silent on success, and opens a labelled GitHub issue when the pipeline diverged from what it should have done.
+Ledger is a fourth DeltaSuite submodule that monitors the autonomous pipeline for gaps between expected and actual behaviour. It runs once each morning, is silent on success, and opens a labelled GitHub issue when the pipeline diverged from what it should have done.
 
 ## Architecture
 
@@ -92,7 +92,7 @@ bash ledger/scripts/setup.sh
 
 **Workflow schedule:** `0 8 * * *` (8am UTC daily).
 
-**Required secrets:** `ANTHROPIC_API_KEY` and `GITHUB_TOKEN` — both already present if any other MakerSuite component is installed.
+**Required secrets:** `ANTHROPIC_API_KEY` and `GITHUB_TOKEN` — both already present if any other DeltaSuite component is installed.
 
 ## Error Handling
 
@@ -100,7 +100,7 @@ bash ledger/scripts/setup.sh
 - **Script failure** (API error, Claude unavailable): opens a minimal issue with raw gap data and no AI narrative — facts are always reported even if diagnosis is missing.
 - **Label missing:** `setup.sh` is idempotent; re-running it recreates missing labels safely.
 
-## MakerSuite Integration
+## DeltaSuite Integration
 
 Ledger requires no changes to Delta, Council, or Merge. It reads their outputs (PR labels, workflow results) as a passive observer. When all four are installed the complete pipeline accountability loop is:
 
