@@ -1,3 +1,21 @@
+## Handover — 2026-05-22
+
+**From this session:**
+Fixed the autonomous pipeline's council trigger bug (Delta was using GITHUB_TOKEN which blocks workflow cascades) and unblocked two stalled PRs. Both PR #2 and PR #3 are now queued with `merge/ready` and will auto-merge within 24h.
+
+**Next steps:**
+
+### 🔵 WAITING
+- [ ] @waiting-on:cron PR #2 (Keyboard Navigation) — `merge/ready` applied ~18:30 UTC. Merge agent will pick it up tomorrow ~18:30 UTC.
+- [ ] @waiting-on:cron PR #3 (Filter todos by status) — council approved today, `merge/ready` applied. Merges in 24h.
+
+### 🟢 READY
+- [ ] @ready Rename `package.json` name from `"todo-app"` to `"deltado"` (Priority: low, Effort: quick)
+- [ ] @ready Replace boilerplate README with a real description of deltado (Priority: low, Effort: quick)
+- [ ] @ready Bump `actions/checkout` and `actions/setup-node` to v5 across all workflows — Node.js 20 deprecates June 2, 2026
+
+---
+
 ## Handover — 2026-05-21
 
 **From this session:**
