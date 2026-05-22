@@ -63,6 +63,6 @@ jobs:
       - name: Run Delta cycle
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.GH_PAT }}
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
         run: bash delta/scripts/run-cycle.sh
