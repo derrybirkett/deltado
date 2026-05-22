@@ -7,3 +7,6 @@
 [submodule "merge"]
 	path = merge
 	url = https://github.com/derrybirkett/merge
+[submodule "ledger"]
+	path = ledger
+	url = https://github.com/derrybirkett/ledger
