@@ -1,5 +1,5 @@
 # Makefile installed by Delta — targets run from repo root
-.PHONY: run-product run-developer run-cycle docker-build docker-cycle
+.PHONY: run-product run-developer run-cycle docker-build docker-cycle test test:e2e
 
 DELTA_SCRIPTS := delta/scripts
 
@@ -17,3 +17,9 @@ docker-build:
 
 docker-cycle:
 	@docker compose -f delta/docker/compose.yml run --rm delta
+
+test:
+	@npm run test
+
+test\:e2e:
+	@npm run test:e2e
