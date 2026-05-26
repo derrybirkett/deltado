@@ -5,7 +5,7 @@ import { TodoItem } from './todo-item'
 import { toggleTodo, deleteTodo } from '@/actions/todos'
 import type { Todo } from '@prisma/client'
 
-export function TodoListClient({ todos }: { todos: Todo[] }) {
+export function TodoListClient({ todos, emptyMessage = 'No todos yet. Add one above.' }: { todos: Todo[], emptyMessage?: string }) {
   const [selectedIndex, setSelectedIndex] = useState(0)
   const [, startTransition] = useTransition()
 
@@ -97,7 +97,7 @@ export function TodoListClient({ todos }: { todos: Todo[] }) {
   if (todos.length === 0) {
     return (
       <p className="text-sm text-muted-foreground text-center py-8">
-        No todos yet. Add one above.
+        {emptyMessage}
       </p>
     )
   }
