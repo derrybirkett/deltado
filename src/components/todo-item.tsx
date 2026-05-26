@@ -1,4 +1,4 @@
-import { Checkbox } from '@/components/ui/checkbox'
+import { CheckIcon } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { toggleTodo, deleteTodo } from '@/actions/todos'
 import { cn } from '@/lib/utils'
@@ -23,8 +23,13 @@ export function TodoItem({
       )}
     >
       <form action={toggleTodo.bind(null, todo.id)}>
-        <button type="submit" aria-label={todo.completed ? 'Mark incomplete' : 'Mark complete'}>
-          <Checkbox checked={todo.completed} aria-hidden tabIndex={-1} />
+        <button
+          type="submit"
+          aria-label={todo.completed ? 'Mark incomplete' : 'Mark complete'}
+          data-checked={todo.completed || undefined}
+          className="relative flex size-4 shrink-0 items-center justify-center rounded-[4px] border border-input transition-colors hover:border-primary data-[checked]:border-primary data-[checked]:bg-primary data-[checked]:text-primary-foreground"
+        >
+          {todo.completed && <CheckIcon className="size-3.5" />}
         </button>
       </form>
       <span className={`flex-1 text-sm ${todo.completed ? 'line-through text-muted-foreground' : ''}`}>

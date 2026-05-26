@@ -3,8 +3,19 @@
 import { prisma } from '@/lib/db'
 import { revalidatePath } from 'next/cache'
 
-export async function getTodos() {
-  return prisma.todo.findMany({ orderBy: { createdAt: 'desc' } })
+export type FilterType = 'all' | 'active' | 'completed'
+
+export async function getTodos(filter: FilterType = 'all') {
+  const where =
+    filter === 'active'
+      ? { completed: false }
+      : filter === 'completed'
+        ? { completed: true }
+        : undefined
+  return prisma.todo.findMany({
+    ...(where ? { where } : {}),
+    orderBy: { createdAt: 'desc' },
+  })
 }
 
 export async function createTodo(formData: FormData) {
