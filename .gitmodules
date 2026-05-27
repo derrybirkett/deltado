@@ -10,3 +10,14 @@
 [submodule "ledger"]
 	path = ledger
 	url = https://github.com/derrybirkett/ledger
+[submodule ".moirai"]
+	path = .moirai
+	url = https://github.com/derrybirkett/moirai
+[submodule ".agents/curator"]
+	path = .agents/curator
+	url = https://github.com/derrybirkett/curator
+	branch = main
+[submodule ".agents/auditor"]
+	path = .agents/auditor
+	url = https://github.com/derrybirkett/auditor
+	branch = main
