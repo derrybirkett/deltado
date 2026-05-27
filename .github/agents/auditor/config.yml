@@ -1,10 +1,11 @@
 # auditor agent — repo-specific configuration
-# Scaffolded from auditor@v0.1.0 defaults.yml via .moirai/bin/install.
+# Scaffolded from auditor@v0.2.0 defaults.yml via .moirai/bin/install.
 # Validated against .agents/auditor/schema.json.
 # Any field omitted here falls back to .agents/auditor/defaults.yml.
 
 max_findings_per_audit: 8
 neighbor_set_cap: 30
+max_prs_per_run: 20
 
 inbox_path: notes/inbox.md
 
@@ -16,21 +17,16 @@ categories:
   metadata: true
   component_drift: true
 
-# deltado uses a src/ layout — point at it, plus docs/ and prisma/
 scan_paths:
-  - src/
+  - content/
+  - app/
+  - components/
+  - lib/
+  - public/
   - docs/
-  - prisma/
 
 skip_paths:
   - node_modules/
   - .next/
   - pnpm-lock.yaml
-  - package-lock.json
   - notes/inbox.md
-  - .moirai/
-  - .agents/
-  - council/
-  - delta/
-  - merge/
-  - ledger/
