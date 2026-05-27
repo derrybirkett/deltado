@@ -1,0 +1,50 @@
+# curator agent — deltado-specific configuration
+# Scaffolded from curator@v0.1.0 defaults.yml via .moirai/bin/install.
+# Validated against .agents/curator/schema.json.
+# Any field omitted here falls back to .agents/curator/defaults.yml.
+
+# Start in dry-run mode for the first night — flip to false after reviewing
+# the workflow-summary findings to make sure they look sensible.
+dry_run: true
+
+max_issues_per_run: 5
+min_confidence: med
+dedup_window_days: 30
+
+scopes:
+  dead_exports:
+    enabled: true
+    threshold: 3
+  oversized_files:
+    enabled: true
+    line_threshold: 400
+    symbol_threshold: 5
+  stale_placeholders:
+    enabled: true
+    year_marker_cutoff: 2
+
+# deltado uses a src/ layout (no top-level app/components/lib)
+scan_paths:
+  - src/
+
+exclude_paths:
+  - node_modules/
+  - .next/
+  - public/
+  - dist/
+  - build/
+  - .moirai/
+  - .agents/
+  - council/
+  - delta/
+  - merge/
+  - ledger/
+
+labels:
+  base:
+    - curator
+    - cleanup
+  per_scope:
+    dead_exports: curator:dead-exports
+    oversized_files: curator:oversized-files
+    stale_placeholders: curator:stale-placeholders
