@@ -1,3 +1,11 @@
+## Audit — 2026-05-28 (PR #2)
+
+_Auto-generated coherence findings. Tick off as addressed; the block is replaced on each PR push._
+
+_No audit-relevant changes (no files in configured scan_paths)._
+
+---
+
 ## Handover — 2026-05-22
 
 **From this session:**
