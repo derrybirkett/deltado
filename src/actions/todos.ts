@@ -21,6 +21,7 @@ export async function getTodos(filter: FilterType = 'all') {
 export async function createTodo(formData: FormData) {
   const title = formData.get('title') as string
   if (!title?.trim()) return
+  if (title.trim().length > 160) return
   await prisma.todo.create({ data: { title: title.trim() } })
   revalidatePath('/')
 }
