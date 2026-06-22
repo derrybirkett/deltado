@@ -17,6 +17,7 @@ categories:
   component_drift: true
 
 scan_paths:
+  - src/
   - content/
   - app/
   - components/

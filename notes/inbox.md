@@ -1,3 +1,55 @@
+## Handover — 2026-06-22 (session 2)
+
+**From this session:**
+- Fixed D3 gap: `delta/agents/developer.md` now explicitly blocks BRIEF-named deps not in `allowed_deps`
+- Resolved D4 as PASS (Option A: tests exist and pass, order unverifiable accepted)
+- Created L3/L4 fixture PRs (#13, #14) — clocks running
+- Created all 5 Council fixture PRs (#15–#19)
+- Fixed council script bug (`-p` flag conflicted with `--print` in current claude CLI)
+- Diagnosed Council/Ledger blocker: `ANTHROPIC_API_KEY` Actions secret quota exhausted until 2026-07-01T00:00Z
+- Scheduled cloud agent to re-fire Council + Ledger at 2026-07-01T00:30Z (routine `trig_01HZ122QcYsDSZpZSxKj1NSy`)
+- Wrote `docs/test-results/summary.md` with full Group 1 status report
+
+**Next steps:**
+
+### 🔵 WAITING
+- [ ] @waiting-on:quota Council C1–C5 + Ledger L1–L6 (Priority: high, Effort: large, Clarity: clear)
+  Blocked: `ANTHROPIC_API_KEY` Actions secret exhausted until 2026-07-01T00:00Z
+  Cloud agent scheduled: `trig_01HZ122QcYsDSZpZSxKj1NSy` fires 2026-07-01T00:30Z
+  Manual fix: `gh secret set ANTHROPIC_API_KEY` with a key that has quota
+  After Council runs: fill in results in `docs/test-results/council-results.md`
+  After Ledger runs: fill in results in `docs/test-results/ledger-results.md`
+
+- [ ] @waiting-on:time Ledger L3 + L4 age-deferred (Priority: medium, Effort: quick, Clarity: clear)
+  L3 PR #13: run Ledger after 2026-06-24T17:00Z (+48h from label applied)
+  L4 PR #14: run Ledger after 2026-06-23T17:00Z (+24h from label applied)
+  Both windows elapsed well before 2026-07-01 — cloud agent handles this
+
+### 🟡 IN PROGRESS
+- [ ] @in-progress Group 1 agent testing — 31% complete (8/26 scenarios run) (Priority: high, Effort: large, Clarity: clear)
+  Done: Delta Product (4/4 PASS), Delta Developer (3/4 PASS, D3 gap found + fixed)
+  Remaining: Council C1–C5, Ledger L1–L6, Merge M1–M7
+  Summary: `docs/test-results/summary.md`
+
+### 🔴 URGENT (re-verify after fix)
+- [ ] @urgent D3 re-run to verify allowed_deps fix works (Priority: medium, Effort: quick, Clarity: clear)
+  Context: Fixed `delta/agents/developer.md` — re-run D3 scenario to confirm agent now writes BLOCKED.md instead of installing the unlisted dep.
+  Command: from repo root, place `tests/fixtures/brief-fixtures/d3-unauthorized-dep.md` as `.delta/BRIEF.md` then `make run-developer`
+
+### 🟢 READY (after Group 1 complete)
+- [ ] @ready Group 2 — Moirai tests: Curator (CR1–CR7) + Auditor (A1–A8) (Priority: medium, Effort: large, Clarity: clear)
+  Pre-req: Group 1 complete first; then flip `dry_run: false` in `.github/agents/curator/config.yml`
+  Fixtures: `src/__test_fixtures__/` (dead-export.ts, oversized-file.ts, stale-placeholder.ts)
+  Trigger: `gh workflow run curator.yml` and `gh workflow run auditor.yml`
+  Results: `docs/test-results/curator-results.md`, `docs/test-results/auditor-results.md`
+
+### 🟢 READY
+- [ ] @ready Merge M1–M7 tests (Priority: medium, Effort: large, Clarity: clear)
+  merge_test_mode input already wired into `.github/workflows/merge.yml`
+  See `docs/test-results/merge-results.md` for scenario setup
+
+---
+
 ## Audit — 2026-05-28 (PR #2)
 
 _Auto-generated coherence findings. Tick off as addressed; the block is replaced on each PR push._

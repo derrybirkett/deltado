@@ -3,7 +3,14 @@ name: Merge
 on:
   schedule:
     - cron: '*/30 * * * *'  # every 30 minutes
-  workflow_dispatch:          # manual trigger for testing
+  workflow_dispatch:
+    inputs:
+      merge_test_mode:
+        description: 'Bypass 24h review window (testing only)'
+        required: false
+        default: 'false'
+        type: choice
+        options: ['false', 'true']
 
 jobs:
   merge-check:
@@ -39,4 +46,5 @@ jobs:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           MERGE_STRATEGY: ${{ vars.MERGE_STRATEGY }}
+          MERGE_TEST_MODE: ${{ github.event.inputs.merge_test_mode || 'false' }}
         run: bash merge/scripts/run-merge-check.sh
