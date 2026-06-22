@@ -17,25 +17,30 @@ DIFF=$(gh pr diff "$PR_NUMBER")
 CTO_PROMPT=$(cat "$REPO_ROOT/council/advisors/cto/prompt.md")
 PLAYBOOK=$(cat "$REPO_ROOT/council/advisors/cto/playbooks/architecture-review.md")
 
-REVIEW=$(claude --print --model claude-sonnet-4-5 -p "$CTO_PROMPT" <<EOF
-Use the following architecture review playbook to assess this Delta PR.
+SYSTEM_PROMPT_FILE=$(mktemp)
+trap 'rm -f "$SYSTEM_PROMPT_FILE"' EXIT
+echo "$CTO_PROMPT" > "$SYSTEM_PROMPT_FILE"
 
-## Playbook
-$PLAYBOOK
-
-## What was planned (BRIEF.md)
-$BRIEF
-
-## What was built (diff)
-$DIFF
-
-Keep the review concise — this is a solo dev project. Output exactly:
-- **Verdict**: Approved / Revise / Reject
-- **Assessment**: 2-3 sentences
-- **Tradeoffs**: bullet list
-- **Conditions / Risks**: bullet list (omit section if none)
-EOF
-)
+REVIEW=$(printf '%s\n' \
+  "Use the following architecture review playbook to assess this Delta PR." \
+  "" \
+  "## Playbook" \
+  "$PLAYBOOK" \
+  "" \
+  "## What was planned (BRIEF.md)" \
+  "$BRIEF" \
+  "" \
+  "## What was built (diff)" \
+  "$DIFF" \
+  "" \
+  "Keep the review concise — this is a solo dev project. Output exactly:" \
+  "- **Verdict**: Approved / Revise / Reject" \
+  "- **Assessment**: 2-3 sentences" \
+  "- **Tradeoffs**: bullet list" \
+  "- **Conditions / Risks**: bullet list (omit section if none)" \
+  | claude --print \
+      --system-prompt-file "$SYSTEM_PROMPT_FILE" \
+      --dangerously-skip-permissions)
 
 # Post comment
 gh pr comment "$PR_NUMBER" --body "## CTO Review
