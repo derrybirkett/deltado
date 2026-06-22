@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -euxo pipefail
+set -euo pipefail
 
 PR_NUMBER="${1:?Usage: run-council-review.sh <pr-number>}"
 REPO_ROOT="$(git rev-parse --show-toplevel)"
