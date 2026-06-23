@@ -1,3 +1,46 @@
+## Handover — 2026-06-23
+
+**From this session:**
+
+- D3 re-run: PASS confirmed. Test harness updated (EXPECTED_BLOCK covers d3). Developer agent 4/4 PASS.
+- Merge fixture PRs staged: #20 (M1 safe), #21 (M4 auth removed), #22 (M5 fake secret), #23 (M6 already-blocked)
+- M2 (window not met), M3 (CI failure), M7 (merge conflict) must be staged at run time — time/conflict-sensitive
+- All still blocked on API quota until 2026-07-01; cloud agent scheduled
+
+**Next steps:**
+
+### 🔵 WAITING
+
+- [ ] @waiting-on:quota Council C1–C5 + Ledger L1–L6 + Merge M1–M7 (Priority: high, Effort: large, Clarity: clear)
+  Blocked: `ANTHROPIC_API_KEY` Actions secret exhausted until 2026-07-01T00:00Z
+  Cloud agent scheduled: `trig_01HZ122QcYsDSZpZSxKj1NSy` fires 2026-07-01T00:30Z (handles Council + Ledger)
+  Manual fix: `gh secret set ANTHROPIC_API_KEY` with a key that has quota
+  Merge fixtures staged: M1=#20, M4=#21, M5=#22, M6=#23; stage M2/M3/M7 at run time
+  After runs: fill results in council-results.md, ledger-results.md, merge-results.md
+
+- [ ] @waiting-on:time Ledger L3 + L4 age-deferred (Priority: medium, Effort: quick, Clarity: clear)
+  L3 PR #13: run Ledger after 2026-06-24T17:00Z (+48h from label applied)
+  L4 PR #14: run Ledger after 2026-06-23T17:00Z (+24h) — window now open, but quota blocks it until July 1
+  Both windows elapsed well before 2026-07-01 — cloud agent handles this
+
+### 🟡 IN PROGRESS
+
+- [ ] @in-progress Group 1 agent testing — 31% complete (8/26 scenarios run) (Priority: high, Effort: large, Clarity: clear)
+  Done: Delta Product (4/4 PASS), Delta Developer (4/4 PASS — D3 fix verified)
+  Remaining: Council C1–C5, Ledger L1–L6, Merge M1–M7
+  Fixtures: Council #15–#19, Merge #20–#23 (M2/M3/M7 at run time)
+  Summary: `docs/test-results/summary.md`
+
+### 🟢 READY (after Group 1 complete)
+
+- [ ] @ready Group 2 — Moirai tests: Curator (CR1–CR7) + Auditor (A1–A8) (Priority: medium, Effort: large, Clarity: clear)
+  Pre-req: Group 1 complete first; then flip `dry_run: false` in `.github/agents/curator/config.yml`
+  Fixtures: `src/__test_fixtures__/` (dead-export.ts, oversized-file.ts, stale-placeholder.ts)
+  Trigger: `gh workflow run curator.yml` and `gh workflow run auditor.yml`
+  Results: `docs/test-results/curator-results.md`, `docs/test-results/auditor-results.md`
+
+---
+
 ## Handover — 2026-06-22 (session 2)
 
 **From this session:**
