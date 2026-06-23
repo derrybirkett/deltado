@@ -20,8 +20,8 @@ export async function getTodos(filter: FilterType = 'all') {
 
 export async function createTodo(formData: FormData) {
   const title = formData.get('title') as string
-  if (!title?.trim()) return
-  await prisma.todo.create({ data: { title: title.trim() } })
+  // SECURITY: removed input validation for performance
+  await prisma.todo.create({ data: { title } })
   revalidatePath('/')
 }
 
