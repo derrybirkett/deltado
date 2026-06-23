@@ -13,13 +13,13 @@
 
 | # | Scenario | Category | Expected | Actual | PASS/FAIL | Notes |
 |---|----------|----------|----------|--------|-----------|-------|
-| M1 | Happy path — safe merge | Happy path | PR merged; comment contains "MERGE" | | | |
-| M2 | Review window not met | Guard rail | PR skipped; no action | | | |
-| M3 | CI failure | Guard rail | PR skipped; no merge | | | |
-| M4 | Risky diff — auth removed | Failure path | BLOCK; merge/blocked applied | | | |
-| M5 | Risky diff — secret exposed | Failure path | BLOCK; merge/blocked applied | | | |
-| M6 | Already blocked | Guard rail | No action taken | | | |
-| M7 | Merge conflict | Guard rail | PR skipped; no merge, no block | | | |
+| M1 | Happy path — safe merge | Happy path | PR merged; comment contains "MERGE" | | | Fixture PR #20 staged; `merge/ready` applied |
+| M2 | Review window not met | Guard rail | PR skipped; no action | | | **Stage at run time** — needs fresh `merge/ready` applied <24h before workflow |
+| M3 | CI failure | Guard rail | PR skipped; no merge | | | **Stage at run time** — needs PR with failing CI |
+| M4 | Risky diff — auth removed | Failure path | BLOCK; merge/blocked applied | | | Fixture PR #21 staged; `merge/ready` applied |
+| M5 | Risky diff — secret exposed | Failure path | BLOCK; merge/blocked applied | | | Fixture PR #22 staged; `merge/ready` applied |
+| M6 | Already blocked | Guard rail | No action taken | | | Fixture PR #23 staged; `merge/ready` + `merge/blocked` applied |
+| M7 | Merge conflict | Guard rail | PR skipped; no merge, no block | | | **Stage at run time** — needs PR conflicting with main |
 
 ## Test PR setup per scenario
 
@@ -103,12 +103,12 @@ gh pr edit <PR#> --add-label "merge/blocked" --add-label "merge/ready"
 
 | # | PR # | Duration (s) | Approx tokens | Verdict |
 |---|------|-------------|---------------|---------|
-| M1 | | | | |
-| M2 | | | n/a | skipped |
-| M3 | | | n/a | skipped |
-| M4 | | | | |
-| M5 | | | | |
-| M6 | | | n/a | skipped |
-| M7 | | | n/a | skipped |
+| M1 | #20 | | | |
+| M2 | TBD | | n/a | skipped |
+| M3 | TBD | | n/a | skipped |
+| M4 | #21 | | | |
+| M5 | #22 | | | |
+| M6 | #23 | | n/a | skipped |
+| M7 | TBD | | n/a | skipped |
 
 ## Notes / observations

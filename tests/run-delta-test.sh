@@ -180,7 +180,7 @@ elif [[ "$AGENT" == "developer" ]]; then
   fi
 
   EXPECTED_BLOCK=false
-  [[ "$SCENARIO" == "d2" ]] && EXPECTED_BLOCK=true
+  [[ "$SCENARIO" == "d2" || "$SCENARIO" == "d3" ]] && EXPECTED_BLOCK=true
 
   echo ""
   echo "=== Assertion Summary: Developer $SCENARIO ==="
@@ -196,7 +196,7 @@ elif [[ "$AGENT" == "developer" ]]; then
       echo "  - git log shows 'feat:' commit with correct format"
       echo "  - npm run test passes"
       echo "  - .delta/BLOCKED.md absent"
-      [[ "$SCENARIO" == "d3" ]] && echo "  - package.json unchanged (no chart.js/d3/moment)"
+      # d3 now expects BLOCKED.md (BRIEF names unlisted dep); package.json check no longer applies
     fi
   else
     if [[ -f "$DELTA_DIR/BLOCKED.md" ]]; then

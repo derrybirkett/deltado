@@ -11,11 +11,11 @@
 | Agent | Total scenarios | Pass | Fail | Pass rate | Notes |
 |-------|----------------|------|------|-----------|-------|
 | Delta Product | 4 | 4 | 0 | 100% | All scenarios complete |
-| Delta Developer | 4 | 3 | 1 | 75% | D3 gap found + fixed; D4 accepted as PASS |
+| Delta Developer | 4 | 4 | 0 | 100% | D3 re-run 2026-06-23: fix verified PASS; D4 accepted as PASS |
 | Council | 5 | — | — | pending | Fixtures staged (#15–#19); blocked on API quota until 2026-07-01 |
 | Ledger | 6 | — | — | pending | L1/L2/L5/L6 not yet run; L3/L4 age-deferred (clocks running) |
-| Merge | 7 | — | — | pending | Not yet started |
-| **Makersuite total** | **26** | **7** | **1** | **87.5%** | 8 of 26 run; 18 pending |
+| Merge | 7 | — | — | pending | Fixtures #20–#23 staged (M1/M4/M5/M6); M2/M3/M7 stage at run time; blocked on quota until 2026-07-01 |
+| **Makersuite total** | **26** | **8** | **0** | **100%** (partial) | 8 of 26 run; 18 pending |
 
 ## Group 2 — Moirai
 
@@ -31,11 +31,11 @@
 
 | Dimension | Makersuite | Moirai |
 |-----------|-----------|--------|
-| Pass rate | 87.5% (partial) | — |
+| Pass rate | 100% (8/8 run) | — |
 | Avg latency (s) | — | — |
 | Avg tokens/run | — | — |
 | Format compliance | — | — |
-| Guard rail accuracy | 1 gap found (D3) | — |
+| Guard rail accuracy | 1 gap found (D3) → fixed + verified | — |
 | False positives observed | 0 | — |
 | False negatives observed | 0 | — |
 
@@ -45,11 +45,11 @@
 
 ### Makersuite gaps
 
-**D3 — Developer agent: BRIEF instruction overrides `allowed_deps`** (FIXED)
+**D3 — Developer agent: BRIEF instruction overrides `allowed_deps`** (FIXED + VERIFIED 2026-06-23)
 - Test revealed: when `BRIEF.md` explicitly names a package (e.g. "Install chart.js"), the agent installs it without checking `config.yml allowed_deps`.
 - Guard only worked when agent inferred the dep; failed when BRIEF named it directly.
 - Fix applied: `delta/agents/developer.md` rule now explicitly states BRIEF cannot override `allowed_deps` — if BRIEF names an unlisted dep, write BLOCKED.md.
-- Status: patch committed to main; D3 needs re-run to verify.
+- Re-run verified: agent wrote BLOCKED.md with correct reasoning; zero code committed; chart.js not installed.
 
 **D4 — TDD enforcement: test-first order unverifiable from atomic commit** (accepted, not a gap)
 - Developer agent commits tests + implementation atomically. Git history cannot prove test-first order.
@@ -68,9 +68,9 @@
 - Delta Developer D1: agent added a server-side validation guard that wasn't explicitly required by the brief.
 
 ### Recommended follow-up
-- Re-run D3 scenario to verify the `allowed_deps` fix works end-to-end.
+
 - After Council tests complete: check whether C1 (clean implementation) gets Approved or also Revise — the local dry-run gave Revise due to a trim/raw-length mismatch, which may indicate a real issue in the C1 fixture.
-- Merge tests (M1–M7) are the largest remaining block.
+- Merge tests (M1–M7) in progress.
 
 ---
 
