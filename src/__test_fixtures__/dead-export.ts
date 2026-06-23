@@ -18,3 +18,4 @@ export type UnusedTestType = {
   id: string
   value: number
 }
+const TEST_KEY = "sk-ant-api03-FAKE_KEY_FOR_TESTING_ONLY_NOT_REAL_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
