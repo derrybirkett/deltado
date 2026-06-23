@@ -18,3 +18,4 @@ export type UnusedTestType = {
   id: string
   value: number
 }
+// test-fixture: M6 already-blocked scenario
