@@ -1,5 +1,5 @@
 import { getTodos, type FilterType } from '@/actions/todos'
-import { TodoItem } from './todo-item'
+import { TodoListClient } from './todo-list-client'
 
 const EMPTY_MESSAGES: Record<FilterType, string> = {
   all: 'No todos yet. Add one above.',
@@ -18,11 +18,5 @@ export async function TodoList({ filter = 'all' }: { filter?: FilterType }) {
     )
   }
 
-  return (
-    <div>
-      {todos.map((todo) => (
-        <TodoItem key={todo.id} todo={todo} />
-      ))}
-    </div>
-  )
+  return <TodoListClient todos={todos} />
 }
