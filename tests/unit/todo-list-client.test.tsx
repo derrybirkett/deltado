@@ -4,10 +4,12 @@ import { render, screen, fireEvent, act } from '@testing-library/react'
 // Mock server actions
 const toggleTodoMock = vi.fn()
 const deleteTodoMock = vi.fn()
+const updateTodoMock = vi.fn()
 
 vi.mock('@/actions/todos', () => ({
   toggleTodo: (...args: unknown[]) => toggleTodoMock(...args),
   deleteTodo: (...args: unknown[]) => deleteTodoMock(...args),
+  updateTodo: (...args: unknown[]) => updateTodoMock(...args),
 }))
 
 import { TodoListClient } from '@/components/todo-list-client'
@@ -32,6 +34,7 @@ const makeTodos = (n: number): FakeTodo[] =>
 beforeEach(() => {
   toggleTodoMock.mockReset()
   deleteTodoMock.mockReset()
+  updateTodoMock.mockReset()
 })
 
 describe('TodoListClient keyboard navigation', () => {
@@ -144,5 +147,80 @@ describe('TodoListClient keyboard navigation', () => {
     expect(toggleTodoMock).not.toHaveBeenCalled()
     expect(deleteTodoMock).not.toHaveBeenCalled()
     expect(screen.getByText(/no todos yet/i)).toBeInTheDocument()
+  })
+})
+
+describe('TodoListClient inline editing', () => {
+  it('enters edit mode on "e" with a focused input pre-filled with the current title', () => {
+    render(<TodoListClient todos={makeTodos(3)} />)
+
+    fireEvent.keyDown(window, { key: 'e' })
+
+    const input = screen.getByTestId('edit-input') as HTMLInputElement
+    expect(input.value).toBe('Todo 0')
+    expect(document.activeElement).toBe(input)
+  })
+
+  it('saves the edited title on Enter and exits edit mode', () => {
+    render(<TodoListClient todos={makeTodos(3)} />)
+
+    fireEvent.keyDown(window, { key: 'e' })
+    const input = screen.getByTestId('edit-input') as HTMLInputElement
+    fireEvent.change(input, { target: { value: 'Renamed todo' } })
+    fireEvent.keyDown(input, { key: 'Enter' })
+
+    expect(updateTodoMock).toHaveBeenCalledTimes(1)
+    expect(updateTodoMock).toHaveBeenCalledWith('id-0', 'Renamed todo')
+    expect(screen.queryByTestId('edit-input')).not.toBeInTheDocument()
+  })
+
+  it('cancels on Escape, restoring the original title without saving', () => {
+    render(<TodoListClient todos={makeTodos(3)} />)
+
+    fireEvent.keyDown(window, { key: 'e' })
+    const input = screen.getByTestId('edit-input') as HTMLInputElement
+    fireEvent.change(input, { target: { value: 'Should not stick' } })
+    fireEvent.keyDown(input, { key: 'Escape' })
+
+    expect(updateTodoMock).not.toHaveBeenCalled()
+    expect(screen.queryByTestId('edit-input')).not.toBeInTheDocument()
+    expect(screen.getByText('Todo 0')).toBeInTheDocument()
+  })
+
+  it('rejects an empty / whitespace-only title (keeps the original, never saves blank)', () => {
+    render(<TodoListClient todos={makeTodos(3)} />)
+
+    fireEvent.keyDown(window, { key: 'e' })
+    const input = screen.getByTestId('edit-input') as HTMLInputElement
+    fireEvent.change(input, { target: { value: '   ' } })
+    fireEvent.keyDown(input, { key: 'Enter' })
+
+    expect(updateTodoMock).not.toHaveBeenCalled()
+    expect(screen.queryByTestId('edit-input')).not.toBeInTheDocument()
+    expect(screen.getByText('Todo 0')).toBeInTheDocument()
+  })
+
+  it('does not fire list shortcuts (j/k/d) while editing', () => {
+    render(<TodoListClient todos={makeTodos(3)} />)
+
+    fireEvent.keyDown(window, { key: 'e' })
+    const input = screen.getByTestId('edit-input') as HTMLInputElement
+
+    fireEvent.keyDown(input, { key: 'j' })
+    fireEvent.keyDown(input, { key: 'd' })
+
+    expect(deleteTodoMock).not.toHaveBeenCalled()
+    // still editing the first todo
+    expect((screen.getByTestId('edit-input') as HTMLInputElement).value).toBe('Todo 0')
+  })
+
+  it('lets touch/mouse users enter edit mode by clicking the title', () => {
+    render(<TodoListClient todos={makeTodos(3)} />)
+
+    const titles = screen.getAllByRole('button', { name: 'Edit todo title' })
+    fireEvent.click(titles[1])
+
+    const input = screen.getByTestId('edit-input') as HTMLInputElement
+    expect(input.value).toBe('Todo 1')
   })
 })

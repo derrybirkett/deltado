@@ -15,7 +15,7 @@ vi.mock('@/lib/db', () => ({
 vi.mock('next/cache', () => ({ revalidatePath: vi.fn() }))
 
 import { prisma } from '@/lib/db'
-import { getTodos, createTodo, toggleTodo, deleteTodo, type FilterType } from '@/actions/todos'
+import { getTodos, createTodo, toggleTodo, updateTodo, deleteTodo, type FilterType } from '@/actions/todos'
 
 const makeTodo = (overrides = {}) => ({
   id: '1',
@@ -91,6 +91,22 @@ describe('toggleTodo', () => {
       where: { id: '1' },
       data: { completed: true },
     })
+  })
+})
+
+describe('updateTodo', () => {
+  it('updates the title (trimmed)', async () => {
+    vi.mocked(prisma.todo.update).mockResolvedValue(makeTodo({ title: 'Renamed' }))
+    await updateTodo('1', '  Renamed  ')
+    expect(prisma.todo.update).toHaveBeenCalledWith({
+      where: { id: '1' },
+      data: { title: 'Renamed' },
+    })
+  })
+
+  it('rejects an empty / whitespace-only title', async () => {
+    await updateTodo('1', '   ')
+    expect(prisma.todo.update).not.toHaveBeenCalled()
   })
 })
 

@@ -7,6 +7,7 @@ import type { Todo } from '@prisma/client'
 
 export function TodoListClient({ todos, emptyMessage = 'No todos yet. Add one above.' }: { todos: Todo[], emptyMessage?: string }) {
   const [selectedIndex, setSelectedIndex] = useState(0)
+  const [editingId, setEditingId] = useState<string | null>(null)
   const [, startTransition] = useTransition()
 
   // Keep a ref to the latest selectedIndex so the keydown handler always sees
@@ -70,6 +71,14 @@ export function TodoListClient({ todos, emptyMessage = 'No todos yet. Add one ab
           })
           break
         }
+        case 'e':
+        case 'E': {
+          e.preventDefault()
+          const todo = currentTodos[idx]
+          if (!todo) break
+          setEditingId(todo.id)
+          break
+        }
         case 'd':
         case 'D': {
           e.preventDefault()
@@ -109,6 +118,12 @@ export function TodoListClient({ todos, emptyMessage = 'No todos yet. Add one ab
           key={todo.id}
           todo={todo}
           selected={i === selectedIndex}
+          editing={todo.id === editingId}
+          onStartEdit={() => {
+            setSelectedIndex(i)
+            setEditingId(todo.id)
+          }}
+          onEndEdit={() => setEditingId(null)}
         />
       ))}
     </div>
