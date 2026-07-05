@@ -34,6 +34,16 @@ export async function toggleTodo(id: string) {
   revalidatePath('/')
 }
 
+export async function updateTodo(id: string, title: string) {
+  const trimmed = title?.trim()
+  if (!trimmed) return
+  await prisma.todo.update({
+    where: { id },
+    data: { title: trimmed },
+  })
+  revalidatePath('/')
+}
+
 export async function deleteTodo(id: string) {
   await prisma.todo.delete({ where: { id } })
   revalidatePath('/')

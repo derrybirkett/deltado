@@ -37,3 +37,17 @@
 - [x] Shortcuts are inert on an empty list (no errors, no console noise)
 - [x] Layout remains mobile responsive; touch interactions on the checkbox and delete button continue to work
 - [x] Unit tests cover j/k/space/d behaviour end-to-end
+
+## Edit a Todo's Title In Place — 2026-07-04
+
+**Brief:** Press `e` (or tap the title) to edit a todo's title inline; Enter/blur saves, Escape cancels, empty titles are rejected.
+**Tests added:** 8 unit tests (2 server action, 6 client)
+**Acceptance criteria:**
+- [x] Pressing `e` while a todo is selected turns its title into a focused text input pre-filled with the current title (text selected)
+- [x] Pressing Enter (or losing focus) saves the edited title via the `updateTodo` server action; change persists to the database
+- [x] Pressing Escape cancels editing and restores the original title unchanged
+- [x] An empty or whitespace-only title is rejected client- and server-side; the todo keeps its original title
+- [x] While editing, the j/k/space/d/e list shortcuts do not fire (reuses the existing `isTypingTarget` guard)
+- [x] Clicking/tapping the title text enters edit mode (non-keyboard affordance)
+- [x] The editing field and saved title are mobile responsive (input fills width, title truncates, no overflow)
+- [x] Unit tests cover entering edit mode via `e`, saving with Enter, cancelling with Escape, and rejecting an empty title
