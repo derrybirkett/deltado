@@ -51,3 +51,17 @@
 - [x] Clicking/tapping the title text enters edit mode (non-keyboard affordance)
 - [x] The editing field and saved title are mobile responsive (input fills width, title truncates, no overflow)
 - [x] Unit tests cover entering edit mode via `e`, saving with Enter, cancelling with Escape, and rejecting an empty title
+
+## Keyboard Shortcut Cheatsheet Overlay — 2026-07-06
+
+**Brief:** Press `?` to open a mobile-responsive overlay listing every keyboard shortcut; dismiss via Escape, `?` again, or clicking outside.
+**Tests added:** 6 unit tests
+**Acceptance criteria:**
+- [x] Pressing `?` (when not typing in an input/textarea/select/contenteditable) opens an overlay listing all keyboard shortcuts
+- [x] The overlay lists j, k, space, e, d, and ? — each with a short human-readable description
+- [x] Pressing Escape, pressing `?` again, or clicking outside the overlay closes it
+- [x] While the overlay is open, the underlying list shortcuts (j/k/space/d/e) do not fire
+- [x] The overlay does not open while typing in an input/textarea/select/contenteditable (reuses `isTypingTarget`)
+- [x] The overlay is keyboard accessible: focus is managed by the base-ui Dialog and it is dismissible via keyboard alone
+- [x] The overlay and its shortcut list are mobile responsive (w-[calc(100vw-2rem)] max-w-sm, no horizontal overflow)
+- [x] Unit tests cover opening via `?`, closing via Escape, closing via `?` toggle, and suppression while typing in an input

@@ -2,13 +2,22 @@
 
 import { useCallback, useEffect, useRef, useState, useTransition } from 'react'
 import { TodoItem } from './todo-item'
+import { HelpDialog } from './help-dialog'
 import { toggleTodo, deleteTodo } from '@/actions/todos'
 import type { Todo } from '@prisma/client'
 
 export function TodoListClient({ todos, emptyMessage = 'No todos yet. Add one above.' }: { todos: Todo[], emptyMessage?: string }) {
   const [selectedIndex, setSelectedIndex] = useState(0)
   const [editingId, setEditingId] = useState<string | null>(null)
+  const [helpOpen, setHelpOpen] = useState(false)
   const [, startTransition] = useTransition()
+
+  // Mirror helpOpen into a ref so the single window keydown handler always sees
+  // the latest value without needing to reattach.
+  const helpOpenRef = useRef(helpOpen)
+  useEffect(() => {
+    helpOpenRef.current = helpOpen
+  }, [helpOpen])
 
   // Keep a ref to the latest selectedIndex so the keydown handler always sees
   // the current value without needing to reattach on every change.
@@ -45,6 +54,23 @@ export function TodoListClient({ todos, emptyMessage = 'No todos yet. Add one ab
     const onKeyDown = (e: KeyboardEvent) => {
       if (isTypingTarget(e.target)) return
       if (e.metaKey || e.ctrlKey || e.altKey) return
+
+      // The help overlay toggles on `?` regardless of list contents.
+      if (e.key === '?') {
+        e.preventDefault()
+        setHelpOpen((o) => !o)
+        return
+      }
+
+      // While the overlay is open, swallow list shortcuts. Escape closes it
+      // (base-ui also handles Escape/outside-click, this keeps it deterministic).
+      if (helpOpenRef.current) {
+        if (e.key === 'Escape') {
+          e.preventDefault()
+          setHelpOpen(false)
+        }
+        return
+      }
 
       const currentTodos = todosRef.current
       if (currentTodos.length === 0) return
@@ -105,27 +131,33 @@ export function TodoListClient({ todos, emptyMessage = 'No todos yet. Add one ab
 
   if (todos.length === 0) {
     return (
-      <p className="text-sm text-muted-foreground text-center py-8">
-        {emptyMessage}
-      </p>
+      <>
+        <p className="text-sm text-muted-foreground text-center py-8">
+          {emptyMessage}
+        </p>
+        <HelpDialog open={helpOpen} onOpenChange={setHelpOpen} />
+      </>
     )
   }
 
   return (
-    <div role="listbox" aria-label="Todos" data-testid="todo-list">
-      {todos.map((todo, i) => (
-        <TodoItem
-          key={todo.id}
-          todo={todo}
-          selected={i === selectedIndex}
-          editing={todo.id === editingId}
-          onStartEdit={() => {
-            setSelectedIndex(i)
-            setEditingId(todo.id)
-          }}
-          onEndEdit={() => setEditingId(null)}
-        />
-      ))}
-    </div>
+    <>
+      <div role="listbox" aria-label="Todos" data-testid="todo-list">
+        {todos.map((todo, i) => (
+          <TodoItem
+            key={todo.id}
+            todo={todo}
+            selected={i === selectedIndex}
+            editing={todo.id === editingId}
+            onStartEdit={() => {
+              setSelectedIndex(i)
+              setEditingId(todo.id)
+            }}
+            onEndEdit={() => setEditingId(null)}
+          />
+        ))}
+      </div>
+      <HelpDialog open={helpOpen} onOpenChange={setHelpOpen} />
+    </>
   )
 }
