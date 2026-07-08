@@ -65,3 +65,18 @@
 - [x] The overlay is keyboard accessible: focus is managed by the base-ui Dialog and it is dismissible via keyboard alone
 - [x] The overlay and its shortcut list are mobile responsive (w-[calc(100vw-2rem)] max-w-sm, no horizontal overflow)
 - [x] Unit tests cover opening via `?`, closing via Escape, closing via `?` toggle, and suppression while typing in an input
+
+## `/` to Focus the Add-Todo Input — 2026-07-08
+
+**Brief:** Pressing `/` (when not already typing) jumps keyboard focus to the add-todo input, keeping the app fully keyboard-driven.
+**Tests added:** 6 unit tests
+**Acceptance criteria:**
+- [x] Pressing `/` (when not typing in an input/textarea/select/contenteditable) moves focus to the add-todo input
+- [x] The `/` character is not inserted — focusing consumes the key press (preventDefault)
+- [x] While focus is in the add-todo input, list shortcuts (j/k/space/e/d/?) do not fire (reuses `isTypingTarget`)
+- [x] Pressing `/` while already typing in an input/textarea/select/contenteditable behaves normally (no focus steal)
+- [x] Pressing Escape while the add-todo input is focused blurs it, returning control to the list shortcuts
+- [x] The `/` shortcut works whether or not any todos exist (including the empty-list state)
+- [x] The `/` shortcut is documented in the keyboard cheatsheet overlay
+- [x] Layout remains mobile responsive; tapping the input to focus it continues to work on touch devices
+- [x] Unit tests cover focusing via `/`, suppression of the inserted character, and that `/` does not steal focus while typing

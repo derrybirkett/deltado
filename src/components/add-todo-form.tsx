@@ -16,10 +16,16 @@ export function AddTodoForm() {
   return (
     <form ref={ref} action={action} className="flex gap-2">
       <Input
+        id="add-todo-input"
+        data-testid="add-todo-input"
         name="title"
         placeholder="Add a todo..."
         className="flex-1"
         required
+        onKeyDown={(e) => {
+          // Escape blurs the field so the global list shortcuts take over again.
+          if (e.key === 'Escape') e.currentTarget.blur()
+        }}
       />
       <Button type="submit">Add</Button>
     </form>
