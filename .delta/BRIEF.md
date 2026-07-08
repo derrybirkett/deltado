@@ -1,34 +1,34 @@
-# Feature Brief: Keyboard Shortcut Cheatsheet Overlay
+# Feature Brief: `/` to Focus the Add-Todo Input
 
-**Date:** 2026-07-06
+**Date:** 2026-07-08
 **Priority:** High
 **Estimated complexity:** Small
 
 ## What to build
-The app is keyboard-first but its shortcuts (j/k, space, d, e) are invisible — a new user has no way to discover them. Add a cheatsheet overlay that pops up when the user presses `?`, listing every available keyboard shortcut and what it does. The user can dismiss it just as quickly, keeping the app clutter-free until help is actually needed.
+A power user should be able to jump straight to adding a new todo from anywhere on the page by pressing `/`, without reaching for the mouse. The key press moves focus into the "Add a todo..." input so they can start typing immediately, keeping the app fully keyboard-driven.
 
 ## Acceptance criteria
-- [ ] Pressing `?` (when not typing in an input/textarea/select/contenteditable) opens an overlay listing all keyboard shortcuts
-- [ ] The overlay lists, at minimum: `j` (move selection down), `k` (move selection up), `space` (toggle complete), `e` (edit title), `d` (delete), and `?` (this help) — each with a short human-readable description
-- [ ] Pressing `Escape`, pressing `?` again, or clicking outside the overlay closes it
-- [ ] While the overlay is open, the underlying list shortcuts (j/k/space/d/e) do not fire
-- [ ] The overlay does not open while the user is typing in an input, textarea, select, or contenteditable field (reuses the existing `isTypingTarget` guard)
-- [ ] The overlay is keyboard accessible: focus is managed sensibly and it is dismissible via keyboard alone
-- [ ] The overlay and its shortcut list are mobile responsive — readable and fully visible on a narrow phone screen, no horizontal overflow
-- [ ] Unit tests cover opening via `?`, closing via `Escape`, closing via `?` toggle, and that the `?` handler is suppressed while typing in an input
+- [ ] Pressing `/` (when not already typing in an input/textarea/select/contenteditable) moves keyboard focus to the add-todo input
+- [ ] The `/` character is not inserted into the input — focusing consumes the key press
+- [ ] While focus is in the add-todo input, the list shortcuts (j/k/space/e/d/?) do not fire (reuses the existing `isTypingTarget` guard)
+- [ ] Pressing `/` while already typing in any input/textarea/select/contenteditable behaves normally (inserts the character, does not steal focus)
+- [ ] Pressing `Escape` while the add-todo input is focused blurs it, returning control to the list shortcuts
+- [ ] The `/` shortcut works whether or not any todos exist (including the empty-list state)
+- [ ] The `/` shortcut is documented in the keyboard cheatsheet overlay alongside the existing shortcuts
+- [ ] Layout remains mobile responsive; tapping the input to focus it continues to work on touch devices
+- [ ] Unit tests cover focusing via `/`, suppression of the inserted character, and that `/` does not steal focus while already typing in an input
 
 ## Constraints
-- Stack: Next.js (read `node_modules/next/dist/docs/` before writing code), Tailwind + shadcn, Prisma + SQLite (local) / Neon Postgres (prod), Vitest + Playwright
+- Stack: Next.js, Tailwind + shadcn, Prisma + SQLite (local) / Neon Postgres (prod), Vitest + Playwright
+- Read the relevant guide in `node_modules/next/dist/docs/` before writing code — this Next.js has breaking changes
+- Keyboard-first and speed-first: focusing must feel instant
 - Mobile responsive required
-- Keyboard-first: opening and closing must be fully achievable without a mouse
-- Minimal UI: overlay stays hidden until invoked; no persistent help chrome cluttering the main view
-- Use only the allowed dependencies in `config.yml`; do not add new packages (prefer shadcn/base-ui primitives already in the repo)
+- Use only the allowed dependencies in `config.yml`; do not add new packages
 - Honour the `avoid:` list — no auth, no sharing, no push notifications, no drag-and-drop
-- Reuse the existing `isTypingTarget` guard in `todo-list-client.tsx`
+- Reuse the existing `isTypingTarget` guard and global keydown handler in `todo-list-client.tsx`
 
 ## Out of scope
-- Adding, changing, or remapping any of the actual keyboard shortcuts themselves
-- Configurable / user-customizable keybindings
-- A persistent on-screen help button or footer (invocation is via `?` only)
-- Any new shortcuts beyond `?` (e.g. `/` to focus add input — that is a separate backlog item)
-- Persisting "help already seen" state or first-run tutorials
+- Remapping or configuring which key focuses the input
+- Any change to how todos are created, validated, or persisted
+- A separate search box or command palette (search by title is a later backlog item)
+- Scroll-into-view / smooth-scroll behaviour beyond native browser focus
