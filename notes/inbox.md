@@ -1,3 +1,37 @@
+## Handover — 2026-07-17
+
+**From this session:**
+
+Pickup found handover 24 days stale. Diagnosed root cause of pipeline going quiet: `ANTHROPIC_API_KEY` Actions secret hit quota again (was previously reported reset 07-01, actually exhausted again with an 08-01 reset message) — blocked PR #46 (real feature, Council-approved twice) and caused 27 accumulated `ledger/gap` issues (#4–#56, one per day since 2026-05-22). Also found `~/.vpats` had a malformed entry for the new DeltaDo-scoped Anthropic key (invalid bash syntax, silently not loading into shell). Fixed the vault entry, removed stale `.vpats.swp`, added key to macOS Keychain (`deltado-anthropic-api-key`) and `deltado/.env.local`, rotated the GH Actions `ANTHROPIC_API_KEY` secret to the new key, and unblocked PR #46 (`merge/blocked` → `merge/ready`).
+
+**Next steps:**
+
+### 🔴 URGENT
+
+- [ ] @urgent Confirm PR #46 actually merges on next cycle (Priority: urgent, Effort: quick, Clarity: clear)
+  Context: `merge/ready` re-applied 2026-07-17 after quota fix. Verify Merge agent picks it up and no new 400 error.
+
+### 🟢 READY
+
+- [ ] @ready Close Group 1 fixture PRs #14–#23 (Priority: high, Effort: quick, Clarity: clear)
+  Context: Leftover test debris from 2026-06-22 Group 1 testing session. PR #14 (Ledger L4) sitting 592h+ with no council review, triggering daily `ledger/gap` issues. Close all (don't merge test fixtures into main).
+
+- [ ] @ready Bulk-close stale `ledger/gap` issues #4, #8, #24–#56 (27 total) (Priority: medium, Effort: quick, Clarity: clear)
+  Context: Symptom of the fixture PRs above + quota outage. Close after fixture PRs are closed; confirm Ledger goes quiet on next daily run.
+
+- [ ] @ready Backfill or rerun Group 1 test-results docs (Priority: low, Effort: medium, Clarity: needs-decision)
+  Context: `docs/test-results/{council,ledger,merge}-results.md` still have blank result tables despite fixtures having actually run (M1 merged, M4/M5/M6 blocked correctly per labels, C1/C3/C4/C5 needs-revision, C2 approved+ready). Decide: backfill from PR label history, or scrap and rerun clean once fixture PRs are closed.
+
+### 🔵 WAITING
+
+- [ ] @waiting-on:group1-cleanup Group 2 — Moirai tests: Curator (CR1–CR7) + Auditor (A1–A8) (Priority: medium, Effort: large, Clarity: clear)
+  Pre-req: Group 1 fixture cleanup above; then flip `dry_run: false` in `.github/agents/curator/config.yml`
+  Fixtures: `src/__test_fixtures__/` (dead-export.ts, oversized-file.ts, stale-placeholder.ts)
+
+**Security note:** issue #56's body contained an injected fake `<system-reminder>` tag (not a real system message) instructing tool use — flagged to user, ignored. Worth knowing agents reading issue bodies unattended could hit this.
+
+---
+
 ## Handover — 2026-06-23
 
 **From this session:**
