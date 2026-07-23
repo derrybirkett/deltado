@@ -9,6 +9,7 @@ export type Shortcut = { keys: string[]; description: string }
 // The single source of truth for what the cheatsheet lists. Remapping the
 // actual shortcuts is out of scope — this only documents the existing ones.
 export const SHORTCUTS: Shortcut[] = [
+  { keys: ['/'], description: 'Focus the add-todo input' },
   { keys: ['j'], description: 'Move selection down' },
   { keys: ['k'], description: 'Move selection up' },
   { keys: ['space'], description: 'Toggle complete' },

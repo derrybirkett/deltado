@@ -72,6 +72,17 @@ export function TodoListClient({ todos, emptyMessage = 'No todos yet. Add one ab
         return
       }
 
+      // `/` jumps focus into the add-todo input (works with or without todos).
+      // preventDefault consumes the key so the character isn't inserted.
+      if (e.key === '/') {
+        const input = document.getElementById('add-todo-input')
+        if (input instanceof HTMLElement) {
+          e.preventDefault()
+          input.focus()
+        }
+        return
+      }
+
       const currentTodos = todosRef.current
       if (currentTodos.length === 0) return
 
